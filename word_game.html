@@ -1,0 +1,201 @@
+
+
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <meta charset="utf-8">
+
+        <style>
+
+            #question{
+
+                margin: 20px;
+
+            }
+
+            #question div{
+
+                float: left;
+
+                color: white;
+
+                font-size: 1em;
+
+                background-color: black;
+
+                box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
+
+                border-radius: 5px;
+
+                margin-top:10px;
+
+                padding:10px;
+
+                cursor:pointer;
+
+                margin-left:10px;
+
+            }
+
+            #answer{
+
+                clear: both;
+
+                margin: 20px;
+
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+
+           <div id='question'></div>
+
+           <div id='answer'></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+
+        <script>
+
+            var words = [];
+
+            function game_parametrs() {
+
+                var switcher = true;
+
+                words = Array.prototype.slice.call(arguments);
+
+                var shuffled_words = Array.prototype.slice.call(arguments);
+
+                var divs = "";
+
+                while (switcher == true){
+
+                    shuffle(shuffled_words);
+
+                    for(var i in words){
+
+                        if(words[i] != shuffled_words[i]){
+
+                            switcher = false;
+
+                            break;
+
+                        }
+
+                    }
+
+                }
+
+                for(var i in shuffled_words){
+
+                    var id = 'word'+i;
+
+                    divs = divs + "<div onclick=makeMagic('"+id+"') id="+id+">"+shuffled_words[i] + "</div>";
+
+                }
+
+                document.getElementById("question").innerHTML = divs;
+
+                for(var i=0;i<shuffled_words.length;i++){
+
+                    document.getElementsByTagName('div')[i].addEventListener('click',function(e){
+
+                         var target = e.target || e.srcElement,
+
+                         text = target.textContent || text.innerText;   
+
+                    });
+
+                }
+
+                function shuffle(a) {
+
+                    var j, x, i;
+
+                    for (i = a.length; i; i -= 1) {
+
+                        j = Math.floor(Math.random() * i);
+
+                        x = a[i - 1];
+
+                        a[i - 1] = a[j];
+
+                        a[j] = x;
+
+                    }
+
+                    return a;
+
+                }
+
+            }
+
+            var total_left = 0;
+
+            var final_result = [];
+
+            function makeMagic(id){
+
+                var clicked_id = document.getElementById(id);
+
+                clicked_id.style.transition = 'transform 2s';
+
+                clicked_id.style.transform = " translate(60px,90px)";
+
+                clicked_id.style.position = "absolute";
+
+                clicked_id.style.left = total_left+'px';
+
+                total_left = total_left + clicked_id.offsetWidth + 10;
+
+                final_result.push(clicked_id.innerHTML);
+
+                var switcher = true;
+
+                if(words.length == final_result.length){
+
+                    for(var i in words){
+
+                        if(words[i] != final_result[i]){
+
+                            switcher = false;
+
+                        }
+
+                    }
+
+                    var final_text = 'you win';
+
+                    if(switcher == false){
+
+                        final_text = 'you lost';
+
+                    }
+
+                        alert(final_text);
+
+                        location.reload();
+
+                }
+
+            }
+
+            
+
+            game_parametrs("кто", "не", "работает", "тот", "ест");
+
+        </script>
+
+    </body>
+
+</html>
+
+
